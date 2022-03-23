@@ -13,7 +13,7 @@ import javax.validation.constraints.NotBlank;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class product {
+public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,6 +27,6 @@ public class product {
     private String description;
 
     @NotBlank(message = "The price field needs to be filled")
-    @Min(0)
+    @Min(value = 0)
     private Double price;
 }
