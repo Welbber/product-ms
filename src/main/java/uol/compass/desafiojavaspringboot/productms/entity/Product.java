@@ -2,13 +2,12 @@ package uol.compass.desafiojavaspringboot.productms.entity;
 
 import lombok.*;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
+@Entity
 @Table(name = "Products")
 @Data
 @NoArgsConstructor
@@ -20,13 +19,13 @@ public class Product {
     @Setter(AccessLevel.PRIVATE)
     private Long id;
 
-    @NotBlank(message = "The name field needs to be filled")
+    @NotBlank(message = "{name.not.blank}")
     private String name;
 
-    @NotBlank(message = "The description field needs to be filled")
+    @NotBlank(message = "{description.not.blank}")
     private String description;
 
-    @NotBlank(message = "The price field needs to be filled")
-    @Min(value = 0)
+    @Min(value = 0, message = "{price.min}")
+    @NotNull(message = "{price.not.null}")
     private Double price;
 }
