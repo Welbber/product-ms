@@ -25,7 +25,7 @@ public class ProductController {
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<ProductDto> findById(@PathVariable long id) throws Exception {
+    public ResponseEntity<ProductDto> findById(@PathVariable long id) {
         return new ResponseEntity<>(productService.findById(id), HttpStatus.OK);
     }
 
@@ -38,7 +38,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity create(@RequestBody @Valid ProductDto product) throws Exception {
+    public ResponseEntity create(@RequestBody @Valid ProductDto product) {
         return new ResponseEntity<>(productService.save(product), HttpStatus.CREATED);
     }
 

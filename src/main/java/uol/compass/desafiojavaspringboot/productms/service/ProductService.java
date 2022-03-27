@@ -5,15 +5,12 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import uol.compass.desafiojavaspringboot.productms.dto.ProductDto;
 import uol.compass.desafiojavaspringboot.productms.entity.Product;
 import uol.compass.desafiojavaspringboot.productms.exception.ProductsNotFoundException;
 import uol.compass.desafiojavaspringboot.productms.repository.ProductRepository;
 import uol.compass.desafiojavaspringboot.productms.repository.specification.ProductSpecification;
 
-import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -43,24 +40,23 @@ public class ProductService {
 
     public List<ProductDto> findByQueryParameters(final String q, Double minPrice, Double maxPrice) {
 
+        log.info("Consultation product to name or description like {} and minPrice >= {} and maxPrice <= {}", q, minPrice, maxPrice);
         var result = productRepository.findAll(where(ProductSpecification.createSpecification(q, minPrice, maxPrice)));
 
         return result.stream().map(product -> model.map(product, ProductDto.class)).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
-    public ProductDto findById(Long id) throws Exception {
-
+    public ProductDto findById(Long id) {
         Optional<Product> product = productRepository.findById(id);
         if (product.isPresent()) {
             log.info("mapping ProductDto to Product found");
             return model.map(product.get(), ProductDto.class);
-        } else {
-            throw new ProductsNotFoundException("Product not found");
         }
+        throw new ProductsNotFoundException("Product not Found");
     }
 
-    public ProductDto save(ProductDto productDto) throws Exception {
+    public ProductDto save(ProductDto productDto) {
 
         log.info("mapping ProductDto to Product and validating");
 
@@ -74,7 +70,7 @@ public class ProductService {
 
     }
 
-    public ProductDto update(ProductDto productDto, Long id) throws Exception {
+    public ProductDto update(ProductDto productDto, Long id) {
         log.info("Consulting product with id = {}", id);
 
         Optional<Product> product = productRepository.findById(id);
@@ -87,12 +83,11 @@ public class ProductService {
 
             log.info("mapping Product to ProductDto updating");
             return model.map(product.get(), ProductDto.class);
-        } else
-            throw new Exception("{product.not.found}");
-
+        }
+        throw new ProductsNotFoundException("Product not Found");
     }
 
-    public boolean delete(Long id) {
+    public void delete(Long id) {
 
         log.info("querying product with id = {} to delete", id);
         Optional<Product> product = productRepository.findById(id);
@@ -100,8 +95,7 @@ public class ProductService {
         if (product.isPresent()) {
             log.info("deleting product with id = {}", id);
             productRepository.deleteById(id);
-            return true;
         }
-        return false;
+        throw new ProductsNotFoundException("Product not Found");
     }
 }
