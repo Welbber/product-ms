@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import uol.compass.desafiojavaspringboot.productms.dto.ProductDto;
 import uol.compass.desafiojavaspringboot.productms.entity.Product;
+import uol.compass.desafiojavaspringboot.productms.exception.ProductsNotFoundException;
 import uol.compass.desafiojavaspringboot.productms.repository.ProductRepository;
 import uol.compass.desafiojavaspringboot.productms.repository.specification.ProductSpecification;
 
@@ -55,7 +56,7 @@ public class ProductService {
             log.info("mapping ProductDto to Product found");
             return model.map(product.get(), ProductDto.class);
         } else {
-            throw new Exception("{product.not.found}");
+            throw new ProductsNotFoundException("Product not found");
         }
     }
 
