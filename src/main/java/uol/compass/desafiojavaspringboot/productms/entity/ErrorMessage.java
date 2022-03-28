@@ -1,5 +1,6 @@
 package uol.compass.desafiojavaspringboot.productms.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class ErrorMessage {
+    @JsonProperty("status_code")
     private Integer statusCode;
     private String message;
 }
