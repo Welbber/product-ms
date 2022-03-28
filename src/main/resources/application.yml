@@ -1,3 +1,6 @@
 spring:
   profiles.active: dev
   jpa.open-in-view: true
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
