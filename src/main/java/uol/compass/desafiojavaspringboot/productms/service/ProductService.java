@@ -21,6 +21,8 @@ import static org.springframework.data.jpa.domain.Specification.where;
 @Service
 public class ProductService {
 
+    public static final String MESSAGE_EXCEPTION_NOT_FOUND = "Product Not Found";
+
     @Autowired
     private ProductRepository productRepository;
 
@@ -53,7 +55,7 @@ public class ProductService {
             log.info("mapping ProductDto to Product found");
             return model.map(product.get(), ProductDto.class);
         }
-        throw new ProductsNotFoundException("Product not Found");
+        throw new ProductsNotFoundException(MESSAGE_EXCEPTION_NOT_FOUND);
     }
 
     public ProductDto save(ProductDto productDto) {
@@ -84,7 +86,7 @@ public class ProductService {
             log.info("mapping Product to ProductDto updating");
             return model.map(product.get(), ProductDto.class);
         }
-        throw new ProductsNotFoundException("Product not Found");
+        throw new ProductsNotFoundException(MESSAGE_EXCEPTION_NOT_FOUND);
     }
 
     public void delete(Long id) {
@@ -96,6 +98,6 @@ public class ProductService {
             log.info("deleting product with id = {}", id);
             productRepository.deleteById(id);
         }
-        throw new ProductsNotFoundException("Product not Found");
+        throw new ProductsNotFoundException(MESSAGE_EXCEPTION_NOT_FOUND);
     }
 }

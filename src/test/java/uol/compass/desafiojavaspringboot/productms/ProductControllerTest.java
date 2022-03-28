@@ -19,6 +19,9 @@ import uol.compass.desafiojavaspringboot.productms.controller.ProductController;
 import uol.compass.desafiojavaspringboot.productms.dto.ProductDto;
 import uol.compass.desafiojavaspringboot.productms.service.ProductService;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @WebMvcTest
 public class ProductControllerTest {
 
@@ -59,7 +62,7 @@ public class ProductControllerTest {
 
     @Test
     public void MustReturnSuccess_WhenSearchingForAllProducts() {
-        when(this.productService.findById(2L)).thenReturn(null);
+        when(this.productService.findAll()).thenReturn(null);
 
         given()
                 .accept(ContentType.JSON)
@@ -67,6 +70,19 @@ public class ProductControllerTest {
                 .get(PRODUCTS_ROUTE)
                 .then()
                 .statusCode(HttpStatus.OK.value());
+
+        List listProductTest = new ArrayList<>();
+
+        listProductTest.add(this.productTest);
+        when(this.productService.findAll()).thenReturn(listProductTest);
+
+        given()
+                .accept(ContentType.JSON)
+                .when()
+                .get(PRODUCTS_ROUTE)
+                .then()
+                .statusCode(HttpStatus.OK.value())
+                .body("[0].name", equalTo(this.productTest.getName()));
     }
 
     @Test
