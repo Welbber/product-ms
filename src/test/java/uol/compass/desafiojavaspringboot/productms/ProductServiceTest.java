@@ -53,7 +53,18 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void MustReturnObjectProductDto_WhenConsultIdProduct() {
+    public void MustProductsAlreadyExistsException_WhenSaveProduct() {
+        when(this.productRepository.findByNameAndDescription(productDtoTest.getName(), productDtoTest.getDescription())).thenReturn(Optional.of(this.productTest));
+        when(this.productRepository.findById(1L)).thenReturn(Optional.of(this.productTest));
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            this.productService.save(this.productDtoTest);
+        });
+
+        Assert.assertEquals(ProductService.MESSAGE_EXCEPTION_ALREADY_EXOSTS, exception.getMessage());
+    }
+
+    @Test
+    public void MustProductAlreadyExists_WhenUpdateProduct() {
         when(this.productRepository.findById(1L)).thenReturn(Optional.ofNullable(this.productTest));
         ProductDto productTest = this.productService.findById(1L);
         AssertColumnProduct(this.productDtoTest, productTest);
@@ -94,6 +105,16 @@ public class ProductServiceTest {
         AssertColumnProduct(produtDtoTest, this.productDtoTest);
     }
 
+    @Test
+    public void MustProductsAlreadyExistsException_WhenUpadeteProduct() {
+        when(this.productRepository.findByNameAndDescription(productDtoTest.getName(), productDtoTest.getDescription())).thenReturn(Optional.of(this.productTest));
+        when(this.productRepository.findById(1L)).thenReturn(Optional.ofNullable(this.productTest));
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            this.productService.update(this.productDtoTest, 1L);
+        });
+
+        Assert.assertEquals(ProductService.MESSAGE_EXCEPTION_ALREADY_EXOSTS, exception.getMessage());
+    }
 
     private void AssertColumnProduct(ProductDto productDto, ProductDto productDtoExepct) {
         Assert.assertEquals(productDtoExepct.getName(), productDto.getName());

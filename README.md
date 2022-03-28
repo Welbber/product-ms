@@ -1,6 +1,6 @@
 # product-ms
 
-> Neste microserviço é possível criar, alterar, visualizar e excluir um determinado produto, além de visualizar a lista de produtos atuais disponíveis. Também deve ser possível realizar a busca de produtos filtrando por name, description e price.
+> Neste microserviço é possível criar, alterar, visualizar e excluir um determinado produto, além de visualizar a lista de produtos atuais disponíveis. Também é possivel realizar a busca de produtos filtrando por name, description e price.
 
 - As instruções abaixo vão demonstrar alguns pontos importantes para o desenvolvimento do projeto.
 - OpenJDK 11.0.14;
@@ -35,7 +35,7 @@
 ```
     docker-compose up -d
 ```
-> Para finalizarr a aplicação use o docker compose, execute o seguinte comando na raiz do seu projeto:
+> Para finalizar a aplicação use o docker compose, execute o seguinte comando na raiz do seu projeto:
 ```
     docker-compose down
 ```
@@ -45,4 +45,4 @@ Para acessar documentação da API é necessario que o aplicação esteja sendo 
 ```
 swagger.json: http://127.0.0.1:9999/v2/api-docs
 swagger-ui: http://127.0.0.1:9999/swagger-ui.html
-``
+```

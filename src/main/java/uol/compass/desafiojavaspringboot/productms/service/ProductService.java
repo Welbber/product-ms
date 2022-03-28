@@ -24,6 +24,8 @@ public class ProductService {
 
     public static final String MESSAGE_EXCEPTION_NOT_FOUND = "Product Not Found";
 
+    public static final String MESSAGE_EXCEPTION_ALREADY_EXOSTS = "Product Already Exists";
+
     @Autowired
     private ProductRepository productRepository;
 
@@ -108,7 +110,7 @@ public class ProductService {
     private void productHesExists(final ProductDto product) {
         log.info("Valid is Proudct Already Exists");
         if (this.productRepository.findByNameAndDescription(product.getName(), product.getDescription()).isPresent())
-            throw new ProductAlreadyExistsException("Product Already Exists");
+            throw new ProductAlreadyExistsException(MESSAGE_EXCEPTION_ALREADY_EXOSTS);
 
     }
 }
