@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uol.compass.desafiojavaspringboot.productms.dto.ProductDto;
 import uol.compass.desafiojavaspringboot.productms.entity.Product;
+import uol.compass.desafiojavaspringboot.productms.exception.ProductAlreadyExistsException;
 import uol.compass.desafiojavaspringboot.productms.exception.ProductsNotFoundException;
 import uol.compass.desafiojavaspringboot.productms.repository.ProductRepository;
 import uol.compass.desafiojavaspringboot.productms.repository.specification.ProductSpecification;
@@ -60,8 +61,9 @@ public class ProductService {
 
     public ProductDto save(ProductDto productDto) {
 
-        log.info("mapping ProductDto to Product and validating");
+        productHesExists(productDto);
 
+        log.info("mapping ProductDto to Product and validating");
         Product product = model.map(productDto, Product.class);
 
         log.info("Save Product base");
@@ -73,8 +75,10 @@ public class ProductService {
     }
 
     public ProductDto update(ProductDto productDto, Long id) {
-        log.info("Consulting product with id = {}", id);
 
+        productHesExists(productDto);
+
+        log.info("Consulting product with id = {}", id);
         Optional<Product> product = productRepository.findById(id);
         if (product.isPresent()) {
             log.info("updating product with id = {}", id);
@@ -99,5 +103,12 @@ public class ProductService {
             productRepository.deleteById(id);
         }
         throw new ProductsNotFoundException(MESSAGE_EXCEPTION_NOT_FOUND);
+    }
+
+    private void productHesExists(final ProductDto product) {
+        log.info("Valid is Proudct Already Exists");
+        if (this.productRepository.findByNameAndDescription(product.getName(), product.getDescription()).isPresent())
+            throw new ProductAlreadyExistsException("Product Already Exists");
+
     }
 }

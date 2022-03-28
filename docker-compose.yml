@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+   product-app-container:
+    image: product-ms:1
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    volumes:
+      - /data/product-ms-app
+    ports:
+      - "9999:9999"

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import uol.compass.desafiojavaspringboot.productms.entity.ErrorMessage;
+import uol.compass.desafiojavaspringboot.productms.exception.ProductAlreadyExistsException;
 import uol.compass.desafiojavaspringboot.productms.exception.ProductsNotFoundException;
 
 import java.util.List;
@@ -26,6 +27,14 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         error.setMessage(productsNotFoundException.getMessage());
         error.setStatusCode(HttpStatus.NOT_FOUND.value());
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(ProductAlreadyExistsException.class)
+    public ResponseEntity handleProductAlreadyExists(ProductAlreadyExistsException productAlreadyExistsException) {
+        ErrorMessage error = new ErrorMessage();
+        error.setMessage(productAlreadyExistsException.getMessage());
+        error.setStatusCode(HttpStatus.BAD_REQUEST.value());
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
     @Override
